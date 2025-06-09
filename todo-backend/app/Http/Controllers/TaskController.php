@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -16,11 +18,9 @@ class TaskController extends Controller
     }
 
     //Creating a new task
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-        ]);
+        $validated = $request->validated(); // Validation is handled by the StoreTaskRequest we created
 
         $task = Auth::user()->tasks()->create([
             'title' => $validated['title'],
@@ -31,16 +31,13 @@ class TaskController extends Controller
     }
 
     //Updating a task
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
         if ($task->user_id !== Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'status' => 'sometimes|boolean',
-        ]);
+        $validated = $request->validated(); // Validation is handled by the UpdateTaskRequest we created
 
         $task->update($validated);
         return response()->json($task);
