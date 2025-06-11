@@ -20,7 +20,7 @@ const AddTask = () => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="">
             {error && (
                 <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
                     {error}

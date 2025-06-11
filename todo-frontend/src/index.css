@@ -48,10 +48,10 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
   cursor: pointer;
   transition: border-color 0.25s;
-  color: #242424;
+  /*color: #242424;*/
 }
 button:focus,
 button:focus-visible {

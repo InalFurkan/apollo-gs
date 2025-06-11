@@ -3,9 +3,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import { TaskProvider } from './contexts/TaskContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import TodoList from './components/TodoList';
+import ListSection from './components/ListSection';
 import AddTask from './components/AddTask';
-import CompletedList from './components/CompletedList';
 import Header from './components/Header';
 
 function App() {
@@ -20,18 +19,15 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
-                    <div className="flex flex-col min-h-screen">
+                    <div className="sm:px-16 px-8 flex flex-col min-h-screen">
                       <Header />
                       <main className="flex-1 overflow-y-auto">
-                        <div className="container mx-auto px-4 py-8 pb-32">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <TodoList />
-                            <CompletedList />
-                          </div>
+                        <div className="pb-16">
+                          <ListSection />
                         </div>
                       </main>
                       <div className="fixed bottom-0 left-0 w-full bg-white-100">
-                        <div className="container mx-auto px-4 py-4">
+                        <div className="mx-auto sm:px-16 px-8 py-4">
                           <AddTask />
                         </div>
                       </div>

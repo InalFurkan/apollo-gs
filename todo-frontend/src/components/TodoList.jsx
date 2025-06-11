@@ -19,8 +19,7 @@ const TodoList = () => {
     );
 
     return (
-        <div className="bg-white rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Todo List</h2>
+        <div className=""> 
             {activeTasks.length === 0 ? (
                 <p className="text-gray-500 italic">No tasks yet</p>
             ) : (
