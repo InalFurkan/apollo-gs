@@ -11,7 +11,7 @@ const headers = () => ({
 const checkResponse = async (response) => {
     const contentType = response.headers.get('content-type');
     console.log('Response Content-Type:', contentType);
-    
+
     if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
         console.log('Response data:', data);
@@ -36,14 +36,14 @@ export const login = async (email, password) => {
             },
             body: JSON.stringify({ email, password }),
         });
-        
+
         console.log('Response status:', response.status);
         const data = await checkResponse(response);
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Login failed');
         }
-        
+
         localStorage.setItem('token', data.token);
         return data;
     } catch (error) {
@@ -61,14 +61,14 @@ export const getTasks = async () => {
         const response = await fetch(`${API_URL}/tasks`, {
             headers: headers(),
         });
-        
+
         console.log('Tasks response status:', response.status);
         const data = await checkResponse(response);
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Failed to fetch tasks');
         }
-        
+
         return data;
     } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -84,14 +84,14 @@ export const createTask = async (taskData) => {
             headers: headers(),
             body: JSON.stringify(taskData),
         });
-        
+
         console.log('Create task response status:', response.status);
         const data = await checkResponse(response);
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Failed to create task');
         }
-        
+
         return data;
     } catch (error) {
         console.error('Error creating task:', error);
@@ -107,14 +107,14 @@ export const updateTask = async (taskId, taskData) => {
             headers: headers(),
             body: JSON.stringify(taskData),
         });
-        
+
         console.log('Update task response status:', response.status);
         const data = await checkResponse(response);
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Failed to update task');
         }
-        
+
         return data;
     } catch (error) {
         console.error('Error updating task:', error);
@@ -129,9 +129,9 @@ export const deleteTask = async (taskId) => {
             method: 'DELETE',
             headers: headers(),
         });
-        
+
         console.log('Delete task response status:', response.status);
-        
+
         if (!response.ok) {
             const data = await checkResponse(response);
             throw new Error(data.message || 'Failed to delete task');
@@ -140,4 +140,20 @@ export const deleteTask = async (taskId) => {
         console.error('Error deleting task:', error);
         throw error;
     }
-}; 
+};
+
+export const getTags = async () => {
+    try {
+        const response = await fetch(`${API_URL}/tags`, {
+            headers: headers(),
+        });
+        const data = await checkResponse(response);
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to fetch tags');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error fetching tags:', error);
+        throw error;
+    }
+};

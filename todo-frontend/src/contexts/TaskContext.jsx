@@ -7,6 +7,8 @@ export const TaskProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTags, setSelectedTags] = useState([]); // array of tag ids or 'assigned'
 
     const fetchTasks = async () => {
         try {
@@ -19,9 +21,9 @@ export const TaskProvider = ({ children }) => {
         }
     };
 
-    const addTask = async (title) => {
+    const addTask = async (taskData) => {
         try {
-            const newTask = await createTask({ title });
+            const newTask = await createTask(taskData);
             setTasks(prev => [...prev, newTask]);
         } catch (err) {
             setError(err.message || 'Failed to create task');
@@ -54,14 +56,36 @@ export const TaskProvider = ({ children }) => {
         fetchTasks();
     }, []);
 
+    // Filtering logic
+    const filteredTasks = tasks.filter(task => {
+        // Search
+        const matchesSearch = searchTerm.trim() === '' || task.title.toLowerCase().includes(searchTerm.toLowerCase());
+        // Tag multi-select
+        const matchesTags =
+            selectedTags.length === 0 ||
+            selectedTags.some(tagId => {
+                if (tagId === 'assigned') {
+                    // Assigned filter: örnek olarak user_id varsa true, yoksa false (backend'e göre düzenlenebilir)
+                    return !!task.user_id;
+                }
+                return Array.isArray(task.tags) && task.tags.some(tag => tag.id === tagId);
+            });
+        return matchesSearch && matchesTags;
+    });
+
     const value = {
         tasks,
+        filteredTasks,
         loading,
         error,
         addTask,
         toggleTask,
         removeTask,
-        refreshTasks: fetchTasks
+        refreshTasks: fetchTasks,
+        searchTerm,
+        setSearchTerm,
+        selectedTags,
+        setSelectedTags
     };
 
     return (
@@ -77,4 +101,4 @@ export const useTasks = () => {
         throw new Error('useTasks must be used within a TaskProvider');
     }
     return context;
-}; 
+};

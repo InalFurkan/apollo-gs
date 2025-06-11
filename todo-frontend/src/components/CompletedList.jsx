@@ -3,8 +3,8 @@ import { useTasks } from '../contexts/TaskContext';
 import Task from './Task';
 
 const CompletedList = () => {
-    const { tasks, loading, error, toggleTask, removeTask } = useTasks();
-    const completedTasks = tasks.filter(task => task.status);
+    const { filteredTasks, loading, error, toggleTask, removeTask } = useTasks();
+    const completedTasks = filteredTasks.filter(task => task.status);
     const [isOpen, setIsOpen] = useState(false);
 
     if (loading) return (
@@ -20,7 +20,7 @@ const CompletedList = () => {
     );
 
     return (
-        <div className="bg-white rounded-lg border border-gray-100">
+        <div className="rounded-lg border border-gray-100">
             <button 
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors duration-200"
@@ -42,7 +42,7 @@ const CompletedList = () => {
             </button>
             
             {isOpen && (
-                <div className="px-6 pb-6">
+                <div className="py-6">
                     {completedTasks.length === 0 ? (
                         <p className="text-gray-500 italic">No completed tasks</p>
                     ) : (
@@ -63,4 +63,4 @@ const CompletedList = () => {
     );
 };
 
-export default CompletedList; 
+export default CompletedList;

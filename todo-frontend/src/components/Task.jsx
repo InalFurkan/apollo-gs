@@ -76,6 +76,16 @@ const Task = ({ task, onToggle, onDelete }) => {
                     <span className={`text-sm truncate ${task.status ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
                         {task.title}
                     </span>
+                    {/* Show tags if present */}
+                    {Array.isArray(task.tags) && task.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                            {task.tags.map(tag => (
+                                <span key={tag.id} className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full">
+                                    {tag.name}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                     <span className="text-xs text-gray-400">
                         {formatDate(task.created_at)}
                     </span>
