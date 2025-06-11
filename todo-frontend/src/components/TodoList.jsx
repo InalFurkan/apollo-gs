@@ -3,8 +3,8 @@ import { useTasks } from '../contexts/TaskContext';
 import Task from './Task';
 
 const TodoList = () => {
-    const { tasks, loading, error, toggleTask, removeTask } = useTasks();
-    const activeTasks = tasks.filter(task => !task.status);
+    const { filteredTasks, loading, error, toggleTask, removeTask } = useTasks();
+    const activeTasks = filteredTasks.filter(task => !task.status);
 
     if (loading) return (
         <div className="flex items-center justify-center p-8">
@@ -38,4 +38,4 @@ const TodoList = () => {
     );
 };
 
-export default TodoList; 
+export default TodoList;

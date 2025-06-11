@@ -13,7 +13,7 @@ class TaskController extends Controller
     //Bringing the tasks of the authenticated user
     public function index()
     {
-        $tasks = Auth::user()->tasks()->orderBy('created_at', 'desc')->get();
+        $tasks = Auth::user()->tasks()->with('tags')->orderBy('created_at', 'desc')->get();
         return response()->json($tasks);
     }
 
@@ -27,6 +27,11 @@ class TaskController extends Controller
             'status' => false,
         ]);
 
+        if (isset($validated['tags'])) {
+            $task->tags()->sync($validated['tags']);
+        }
+
+        $task->load('tags');
         return response()->json($task, 201);
     }
 
@@ -40,6 +45,11 @@ class TaskController extends Controller
         $validated = $request->validated(); // Validation is handled by the UpdateTaskRequest we created
 
         $task->update($validated);
+        if (isset($validated['tags'])) {
+            $task->tags()->sync($validated['tags']);
+        }
+
+        $task->load('tags');
         return response()->json($task);
     }
 

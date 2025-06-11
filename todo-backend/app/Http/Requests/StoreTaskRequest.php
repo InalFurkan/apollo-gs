@@ -11,7 +11,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // It is left as false, because authorization is handled by the controller elswewhere.
+        // It is left as false, because authorization is handled by the controller elswehere.
         return true;
     }
 
@@ -24,6 +24,8 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
+            'tags' => 'array',
+            'tags.*' => 'integer|exists:tags,id',
         ];
     }
 }
