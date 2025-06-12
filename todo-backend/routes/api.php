@@ -14,4 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('tags', TagController::class);
+    Route::get('/users/search', [\App\Http\Controllers\UserController::class, 'search']);
+    Route::post('/tasks/{task}/assign-users', [\App\Http\Controllers\TaskController::class, 'assignUsers']);
 });

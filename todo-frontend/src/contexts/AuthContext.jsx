@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { login as apiLogin } from '../services/api';
+import { login as apiLogin, getProfile } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -10,10 +10,16 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            // You might want to validate the token here
-            setUser({ token });
+            getProfile()
+                .then(profile => setUser(profile))
+                .catch(() => {
+                    localStorage.removeItem('token');
+                    setUser(null);
+                })
+                .finally(() => setLoading(false));
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     const login = async (email, password) => {
@@ -48,4 +54,5 @@ export const useAuth = () => {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
-}; 
+};
+export default AuthProvider;

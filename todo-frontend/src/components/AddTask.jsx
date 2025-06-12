@@ -5,6 +5,7 @@ import TagBadge from './TagBadge';
 
 const AddTask = () => {
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [error, setError] = useState(null);
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
@@ -46,8 +47,9 @@ const AddTask = () => {
         try {
             // Sadece sayısal tag id'lerini gönder
             const onlyTagIds = selectedTags.filter(id => typeof id === 'number' || !isNaN(Number(id))).map(Number);
-            await addTask({ title: title.trim(), tags: onlyTagIds });
+            await addTask({ title: title.trim(), description: description.trim(), tags: onlyTagIds });
             setTitle('');
+            setDescription('');
             setSelectedTags([]);
             setError(null);
         } catch (err) {
@@ -78,6 +80,12 @@ const AddTask = () => {
                     placeholder="Add new task..."
                     required
                     className="flex-1 px-4 py-2 bg-white text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    placeholder="Description (optional)"
+                    className="flex-1 px-4 py-2 bg-white text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[40px] max-h-32"
                 />
                 <div className="relative" ref={dropdownRef}>
                     <button

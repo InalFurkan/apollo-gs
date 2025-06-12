@@ -23,8 +23,8 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|required|string|max:255',
-            'status' => 'sometimes|boolean',
-            'tags' => 'array',
+            'description' => 'nullable|string',
+            'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
         ];
     }

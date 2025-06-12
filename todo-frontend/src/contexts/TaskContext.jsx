@@ -59,7 +59,11 @@ export const TaskProvider = ({ children }) => {
     // Filtering logic
     const filteredTasks = tasks.filter(task => {
         // Search
-        const matchesSearch = searchTerm.trim() === '' || task.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const lowerSearch = searchTerm.trim().toLowerCase();
+        const matchesSearch =
+            lowerSearch === '' ||
+            (task.title && task.title.toLowerCase().includes(lowerSearch)) ||
+            (task.description && task.description.toLowerCase().includes(lowerSearch));
         // Tag multi-select
         const matchesTags =
             selectedTags.length === 0 ||

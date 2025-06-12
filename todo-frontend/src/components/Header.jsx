@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { getTags } from '../services/api';
 import TagBadge from './TagBadge';
 import { useTasks } from '../contexts/TaskContext';
+import AccountModal from './AccountModal';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
   const { searchTerm, setSearchTerm, selectedTags, setSelectedTags } = useTasks();
+  const { user } = useAuth();
+  const [accountOpen, setAccountOpen] = useState(false);
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -32,9 +36,22 @@ const Header = () => {
   };
 
   return (
-    <header className="py-6">
-      <div className="mx-auto">
+    <header className="py-6 relative">
+      <div className="mx-auto flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">My Tasks</h2>
+        {/* Account icon top right */}
+        <button
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 focus:outline-none"
+          onClick={() => setAccountOpen(true)}
+          title="Account"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+        <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} />
+      </div>
+      <div className="mx-auto">
         <div className="flex flex-col md:flex-row md:items-center md:gap-4 gap-4">
           {/* Arama Alanı */}
           <div className="flex-1 max-w-md">

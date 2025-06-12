@@ -24,7 +24,8 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'tags' => 'array',
+            'description' => 'nullable|string',
+            'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
         ];
     }

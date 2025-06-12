@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTasks } from '../contexts/TaskContext';
 import Task from './Task';
 
@@ -6,13 +6,18 @@ import Task from './Task';
 const PAGE_SIZE = 5;
 
 const TodoList = () => {
-    const { filteredTasks, loading, error, toggleTask, removeTask } = useTasks();
+    const { filteredTasks, loading, error, toggleTask, removeTask, searchTerm } = useTasks();
     const activeTasks = filteredTasks.filter(task => !task.status);
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(activeTasks.length / PAGE_SIZE);
     const paginatedTasks = activeTasks.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+    // Reset to first page when search/filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, filteredTasks.length]);
 
     // Handlers
     const goToPage = (page) => {

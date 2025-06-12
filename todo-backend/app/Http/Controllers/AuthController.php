@@ -21,7 +21,7 @@ class AuthController extends Controller
             ]);
 
             $user = User::where('email', $credentials['email'])->first();
-            
+
             if (!$user) {
                 Log::warning('User not found', ['email' => $credentials['email']]);
                 return response()->json(['message' => 'User not found'], 404);
@@ -29,9 +29,7 @@ class AuthController extends Controller
 
             Log::info('User found', ['user_id' => $user->id]);
 
-            if (
-                $credentials['password'] !== $user->password
-            ) {
+            if (!Hash::check($credentials['password'], $user->password)) {
                 Log::warning('Invalid password', ['email' => $credentials['email']]);
                 return response()->json(['message' => 'Invalid password'], 401);
             }
@@ -51,7 +49,7 @@ class AuthController extends Controller
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return response()->json([
                 'message' => 'Login failed',
                 'error' => $e->getMessage()

@@ -157,3 +157,53 @@ export const getTags = async () => {
         throw error;
     }
 };
+
+export const searchUsers = async (query) => {
+    try {
+        const response = await fetch(`${API_URL}/users/search?q=${encodeURIComponent(query)}`, {
+            headers: headers(),
+        });
+        const data = await checkResponse(response);
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to search users');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error searching users:', error);
+        throw error;
+    }
+};
+
+export const assignUsersToTask = async (taskId, userIds) => {
+    try {
+        const response = await fetch(`${API_URL}/tasks/${taskId}/assign-users`, {
+            method: 'POST',
+            headers: headers(),
+            body: JSON.stringify({ user_ids: userIds }),
+        });
+        const data = await checkResponse(response);
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to assign users');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error assigning users:', error);
+        throw error;
+    }
+};
+
+export const getProfile = async () => {
+    try {
+        const response = await fetch(`${API_URL}/user`, {
+            headers: headers(),
+        });
+        const data = await checkResponse(response);
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to fetch user profile');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        throw error;
+    }
+};

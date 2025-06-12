@@ -9,6 +9,7 @@ class Task extends Model
 {
     protected $fillable = [
         'title',
+        'description',
         'status',
         'user_id'
     ];
@@ -25,5 +26,10 @@ class Task extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function assignedUsers()
+    {
+        return $this->belongsToMany(User::class, 'task_user');
     }
 }
